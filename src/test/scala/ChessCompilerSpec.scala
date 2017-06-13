@@ -4,12 +4,17 @@ import parser._
 class ChessCompilerSpec extends FlatSpec with Matchers {
   val validCode =
     """
-      |piece "Bishop"(B) with [
+      | piece "Bishop"(B) with [
       |   Move:Line,
       |   Move:Pattern(test1 = "Test1", test2 = "Test2") if [Condition1, Condition2(conditionKey = "condition value")],
       |   "namedAction"
       | ]
       | action "namedAction" TestAction:TestPattern
+      |
+      | board
+      | |B|_|_|
+      | |_|_|_|
+      | |b|_|_|
     """.stripMargin.trim
 
   val ast =
@@ -25,7 +30,14 @@ class ChessCompilerSpec extends FlatSpec with Matchers {
             ActionNamed("namedAction")
           )
         ),
-        ActionAssignment("namedAction", ActionDefinition("TestAction", IdentifierSingle("TestPattern"), Seq()))
+        ActionAssignment("namedAction", ActionDefinition("TestAction", IdentifierSingle("TestPattern"), Seq())),
+        Board(
+          List(
+            Rank(List(OccupiedSquare("B"), EmptySquare(), EmptySquare())),
+            Rank(List(EmptySquare(), EmptySquare(), EmptySquare())),
+            Rank(List(OccupiedSquare("b"), EmptySquare(), EmptySquare()))
+          )
+        )
       )
     )
 

@@ -17,7 +17,7 @@ object ChessLexer extends RegexParsers{
 
   def tokens: Parser[List[ChessToken]] = {
     phrase(rep1(piece | action | with_ | colon | if_ | equals | comma | left_bracket | right_bracket | left_paren |
-      right_paren | literal | identifier | id))
+      right_paren | board | pipe| underscore| literal | identifier | id))
   }
 
   def literal: Parser[LITERAL] = positioned  {
@@ -46,6 +46,9 @@ object ChessLexer extends RegexParsers{
   def right_bracket = positioned {"]" ^^ (_ => RIGHT_BRACKET())}
   def left_paren = positioned {"(" ^^ (_ => LEFT_PAREN())}
   def right_paren = positioned {")" ^^ (_ => RIGHT_PAREN())}
+  def board = positioned {"board" ^^ (_ => BOARD())}
+  def pipe = positioned {"|" ^^ (_ => PIPE())}
+  def underscore = positioned {"_" ^^ (_ => UNDERSCORE())}
 
 }
 

@@ -20,3 +20,4 @@ case class LEFT_PAREN() extends ChessToken
 case class RIGHT_PAREN() extends ChessToken
 case class PIPE() extends ChessToken
 case class UNDERSCORE() extends ChessToken
+case class BOARD() extends ChessToken

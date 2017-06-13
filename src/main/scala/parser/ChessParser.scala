@@ -24,7 +24,7 @@ object ChessParser extends Parsers {
     print(tokens)
     program(reader) match {
       case NoSuccess(msg, next) => Left(ChessParserError(Location(next.pos.line, next.pos.column), msg))
-      case Success(result, next) => Right(result)
+      case Success(result, _) => Right(result)
     }
   }
 
@@ -33,11 +33,13 @@ object ChessParser extends Parsers {
   }
 
   def block: Parser[ChessAST] = positioned {
-    rep1(statement) ^^ {case statements => ChessAST(statements)}
+    rep1(statement) ^^ (statements => ChessAST(statements))
   }
 
   def statement: Parser[ChessStatement] = positioned {
     val actionAssignment = ACTION() ~ literal ~ actionDefinition ^^ {case _ ~ LITERAL(name) ~ definition => ActionAssignment(name, definition)}
+
+    val board = (BOARD() ~  rank.+) ^^ {case _ ~ ranks  => Board(ranks)}
 
     val piece: Parser[ChessStatement] =
       PIECE() ~ literal ~ LEFT_PAREN() ~ id ~ RIGHT_PAREN() ~
@@ -45,8 +47,19 @@ object ChessParser extends Parsers {
         case _ ~ LITERAL(pieceName) ~ _ ~ ID(pieceId) ~ _ ~ _ ~ _ ~ actions ~ _ => Piece(pieceName, pieceId, actions)
       }
 
-    actionAssignment | piece
+    actionAssignment | piece | board
 
+  }
+
+  def rank: Parser[Rank] = positioned {
+    PIPE() ~ rep1sep( square, PIPE() ) ~ PIPE() ^^ {case _  ~ squares ~ _ => Rank(squares)}
+  }
+
+  def square: Parser[Square] = positioned {
+    (id | UNDERSCORE()) ^^ {
+      case ID(id) => OccupiedSquare(id)
+      case _ => EmptySquare()
+    }
   }
 
   def action: Parser[Action] = positioned {
@@ -76,16 +89,16 @@ object ChessParser extends Parsers {
   }
 
   def id: Parser[ID] = positioned {
-    accept("id", { case id@ID(name) => id })
+    accept("id", { case id@ID(_) => id })
   }
 
 
   def identifier: Parser[IDENTIFIER] = positioned {
-    accept("identifier", { case identifier@IDENTIFIER(name) => identifier })
+    accept("identifier", { case identifier@IDENTIFIER(_) => identifier })
   }
 
   def literal: Parser[LITERAL] = positioned {
-    accept("string literal", { case lit@LITERAL(n) => lit })
+    accept("string literal", { case lit@LITERAL(_) => lit })
   }
 
 
