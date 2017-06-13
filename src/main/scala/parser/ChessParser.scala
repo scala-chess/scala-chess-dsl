@@ -21,9 +21,8 @@ object ChessParser extends Parsers {
 
   def apply(tokens: Seq[ChessToken]): Either[ChessParserError, ChessAST] = {
     val reader = new ChessTokenReader(tokens)
-    print(tokens)
     program(reader) match {
-      case NoSuccess(msg, next) => Left(ChessParserError(Location(next.pos.line, next.pos.column), msg))
+      case NoSuccess(msg, next) => print(ChessParserError(Location(next.pos.line, next.pos.column), msg));Left(ChessParserError(Location(next.pos.line, next.pos.column), msg))
       case Success(result, _) => Right(result)
     }
   }

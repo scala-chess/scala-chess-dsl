@@ -1,7 +1,5 @@
 package parser
 
-import java.util.Optional
-
 import scala.util.parsing.input.Positional
 
 case class ChessAST(statements: Seq[ChessStatement]) extends Positional
@@ -13,7 +11,7 @@ case class Board(ranks: Seq[Rank]) extends ChessStatement
 
 sealed trait Action extends Positional
 case class ActionNamed(name: String) extends Action
-case class  ActionDefinition(actionName: String, pattern: Identifier, conditions: Seq[Identifier]) extends Action
+case class ActionDefinition(name: String, pattern: Identifier, conditions: Seq[Identifier]) extends Action
 
 sealed trait Identifier extends Positional
 case class IdentifierSingle(identifier: String) extends Identifier

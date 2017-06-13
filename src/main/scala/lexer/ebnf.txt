@@ -1,20 +1,23 @@
-<block> ::= (<statement>)+
+<ast> ::= (<statement>)+
+
 <statement> ::= "piece" <stringLiteral> "(" <id> ")" "with" "[" (<action> ",")* <action> "]"
-| "board" <board>
-| "action" <stringLiteral> <actionDef>
+                | "board" <board>
+                | "action" <stringLiteral> <actionDef>
 
 
 <action> ::= <actionDef>
-| <stringLiteral>
+            | <stringLiteral>
 
 <actionDef> ::= <identifier> ":" identifierWithOptions [ "if" "[" (<identifierWithOptions> ",")* <identifierWithOptions>]
 
-<identifierWithOptions> ::= <identifier> "(" (<option>)+ ")"
-| <identifier>
+<identifierWithOptions> ::= <identifier> "(" (<keyValue>)+ ")"
+                            | <identifier>
 
-<option> ::= <identifier> "=" <stringLiteral>
+<keyValue> ::= <identifier> "=" <stringLiteral>
 
 
-<board> ::= (<row>)+
+<board> ::= (<rank>)+
 
-<row> ::= ("|" <id>)+ "|"
+<rank> ::= "|" (<id> "|")+ "|"
+
+<square> ::= <id> | "_"
