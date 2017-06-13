@@ -1,5 +1,7 @@
 package lexer
 
+import compiler.{ChessLexerError, Location}
+
 import scala.util.parsing.combinator.RegexParsers
 
 object ChessLexer extends RegexParsers{

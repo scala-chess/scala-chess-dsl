@@ -18,3 +18,5 @@ case class LEFT_BRACKET() extends ChessToken
 case class RIGHT_BRACKET() extends ChessToken
 case class LEFT_PAREN() extends ChessToken
 case class RIGHT_PAREN() extends ChessToken
+case class PIPE() extends ChessToken
+case class UNDERSCORE() extends ChessToken
