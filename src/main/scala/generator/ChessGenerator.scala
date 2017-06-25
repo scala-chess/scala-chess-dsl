@@ -2,6 +2,7 @@ package generator
 
 import parser._
 import TemplateHelper._
+import compiler.GeneratedFiles
 
 object ChessGenerator {
 

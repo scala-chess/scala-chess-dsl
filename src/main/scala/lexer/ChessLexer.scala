@@ -10,7 +10,7 @@ object ChessLexer extends RegexParsers{
 
   def apply(code: String): Either[ChessLexerError, List[ChessToken]] = {
     parse(tokens, code) match {
-      case NoSuccess(msg, next) => print(Left(ChessLexerError(Location(next.pos.line, next.pos.column), msg)));Left(ChessLexerError(Location(next.pos.line, next.pos.column), msg))
+      case NoSuccess(msg, next) => Left(ChessLexerError(Location(next.pos.line, next.pos.column), msg))
       case Success(result, next) => Right(result)
     }
   }
