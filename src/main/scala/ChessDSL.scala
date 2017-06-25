@@ -1,10 +1,12 @@
 import java.io.PrintWriter
+import sys.process._
+
 
 object ChessDSL extends App {
 
   override def main(args: Array[String]): Unit = {
     //    val fileName = args(1)
-    val fileName = "test.chess"
+    val fileName = "example.chess"
     val source = scala.io.Source.fromFile(fileName)
     val content = try source.mkString finally source.close()
     ChessCompiler(content) match {
@@ -22,6 +24,9 @@ object ChessDSL extends App {
           write(files.board)
           close
         }
+
+        "copy.bat" !
+
         print("Successful")
     }
   }

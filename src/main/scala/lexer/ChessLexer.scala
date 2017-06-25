@@ -22,7 +22,7 @@ object ChessLexer extends RegexParsers{
 
   def literal: Parser[LITERAL] = positioned  {
     """"[^"]*"""".r ^^ { str =>
-      val content = str.substring(1, str.length - 1)
+      val content = str.substring(1, str.length - 1).replace("'", "\"")
       LITERAL(content)
     }
   }
@@ -35,11 +35,11 @@ object ChessLexer extends RegexParsers{
     "[a-zA-Z]".r ^^ {str => ID(str)}
   }
 
-  def piece = positioned {"piece" ^^ (_ => PIECE())}
-  def action = positioned {"action" ^^ (_ => ACTION())}
-  def with_ = positioned {"with" ^^ (_ => WITH())}
+  def piece = positioned {"piece " ^^ (_ => PIECE())}
+  def action = positioned {"action " ^^ (_ => ACTION())}
+  def with_ = positioned {"with " ^^ (_ => WITH())}
   def colon = positioned {":" ^^ (_ => COLON())}
-  def if_ = positioned {"if" ^^ (_ => IF())}
+  def if_ = positioned {"if " ^^ (_ => IF())}
   def equals = positioned {"=" ^^ (_ => EQUALS())}
   def comma = positioned {"," ^^ (_ => COMMA())}
   def left_bracket = positioned {"[" ^^ (_ => LEFT_BRACKET())}

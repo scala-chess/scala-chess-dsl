@@ -1,0 +1,25 @@
+piece "Bishop"(B) with [
+  Move:Line(directions = "diagonal", maxSteps = "Some(2)") if [TargetEmptyOrEnemy],
+  "portToPawn"
+]
+
+piece "Rook"(R) with [
+  Move:Line(directions = "vertical", maxSteps = "Some(3)") if [TargetEmptyOrEnemy],
+  "portToPawn"
+]
+
+piece "Pawn"(P) with [
+  Move:Line(
+    directions = "diagonal ++ vertical ++ horizontal",
+    stopOnCollision = "false"
+    ) if [TargetEmpty]
+]
+
+action "portToPawn" Move:WherePieces(pieceRestriction = "Seq('Pawn')", enemy = "false")
+
+board
+|P|R|P|B|P|
+|_|_|_|_|_|
+|_|_|_|_|_|
+|_|_|_|_|_|
+|p|b|p|r|p|
